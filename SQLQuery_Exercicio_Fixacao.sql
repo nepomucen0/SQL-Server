@@ -294,15 +294,15 @@ add constraint FK_Modelo_2 foreign key (id_categoria) References Categoria(id)
 --adicionando mais modelos, se necessario
 insert into Modelo
 values
- (6, '1','Branco', 40, 50.60, 4)
-,(6, '2','Preto', 41, 79.90, 4)
-,(6, '3','Preto', 42, 89.90, 5)
-,(6, '4','Branco', 43, 10.90, 5)
-,(6, '5','Bege', 39, 29.90, 6)
-,(6, '6','Vermelho', 40, 109.90, 6)
-,(6, '7','Azul', 39, 200.00, 6)
-,(6, '8','Branco', 38, 80.50, 5)
-,(6, '9','Preto', 38, 99.99, 4)
+ (1, '1','Branco', 40, 50.60, 4)
+,(2, '2','Preto', 41, 79.90, 4)
+,(3, '3','Preto', 42, 89.90, 5)
+,(4, '4','Branco', 43, 10.90, 5)
+,(5, '5','Bege', 39, 29.90, 6)
+,(4, '6','Vermelho', 40, 109.90, 6)
+,(3, '7','Azul', 39, 200.00, 6)
+,(2, '8','Branco', 38, 80.50, 5)
+,(1, '9','Preto', 38, 99.99, 4)
 
 --preenchendo valores nulos de novas linhas da tabela e alterando algumas categorias e valores
 update Modelo 
@@ -332,17 +332,34 @@ select id count ()
 from Modelo
 group by codigo_ref, id_fornecedor
 
---2.	Listar a quantidade de modelos que cada fornecedor possui na nossa loja
-select * from Modelo
-select * from estoque
 
+--2.	Listar a quantidade de modelos que cada fornecedor possui na nossa loja
 select 
 	 f.id
 	,f.nome as [Nome do fornecedor]
-	,sum (m.id_fornecedor) as total
+	,count (m.id_fornecedor) as total
 from fornecedor as f
 inner join modelo as m
 	on f.id = m.id_fornecedor
 group by 
 	f.id, f.nome
 order by f.id
+
+--3.	Listar os números de sapato que mais tiverem vendas
+select 
+	 v.id
+	--,f.nome as [Nome do fornecedor]
+	,max (v.id_categoria) as total
+from Vendas as v
+inner join Categoria as c
+	on c.id = v.id_categoria
+group by 
+	v.id
+order by v.id
+
+select * from Fornecedor
+select * from vendas
+select * from cliente
+select * from Categoria
+select * from Modelo
+select * from estoque

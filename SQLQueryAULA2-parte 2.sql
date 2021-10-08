@@ -208,17 +208,17 @@ group by
 order by c.nome
 
 --left join
-select --5
+select												--5
 	c.id
 	,c.nome as [Nome do Cliente]
 	,sum (isnull(v.valor,0)) as total
-from Cliente c --1
-left join Vendas v --2
-	on c.id = v.id_cliente --3 where (caso tenha)
-group by --4
+from Cliente c										--1
+left join Vendas v									--2
+	on c.id = v.id_cliente							--3 where (caso tenha)
+group by											--4
 	c.id
 	,c.nome
-order by c.nome --6
+order by c.nome										--6
 
 --right join
 select 
@@ -241,6 +241,40 @@ left join Vendas v
 	on c.id = v.id_cliente 
 where v.id is null
 order by c.id
+
+-- full other join
+select
+* 
+from Cliente c
+full outer join Vendas v
+	on  c.id = v.id_cliente
+full outer join Produto p
+	on  v.id_produto = p.id
+
+select *
+	 ,c.nome as [Nome do Cliente]
+	 ,(select MAX(id) from Cliente) maxid
+from Cliente c
+left join Vendas v
+	on c.id = v.id_cliente	
+where v.id is null
+order by c.id
+
+--select dentro de select
+select *
+from Cliente c
+left join 
+		(
+		select
+			 id_cliente as cliente
+			,SUM(valor) as valor
+		 from Vendas
+		 group by id_cliente
+		) r
+	on c.id = r.cliente
+where r.valor > 20
+
+
 
 
 

@@ -224,56 +224,56 @@ values
 
 insert into Vendas
 values
-( 1, 1, 2, ' ')
-,( 2, 2, 2, ' ')
-,( 3, 3, 2, ' ')
-,( 4, 4, 2, ' ')
-,( 5, 5, 2, ' ')
-,( 6, 6, 1, ' ')
-,( 7, 7, 1, ' ')
-,( 8, 8, 1, ' ')
-,( 9, 9, 1, ' ')
-,( 10, 10, 1, ' ')
-,( 11, 11, 1, ' ')
-,( 11, 12, 1, ' ')
-,( 12, 13, 2, ' ')
-,( 13, 14, 2, ' ')
-,( 14, 15, 1, ' ')
-,( 15, 15, 2, ' ')
-,( 16, 14, 2, ' ')
-,( 17, 13, 2, ' ')
-,( 18, 12, 2, ' ')
-,( 19, 11, 2, ' ')
-,( 20, 10, 2, ' ')
-,( 21, 9, 2, ' ')
-,( 22, 8, 2, ' ')
-,( 23, 7, 2, ' ')
-,( 24, 6, 2, ' ')
-,( 25, 8, 2, ' ')
-,( 26, 5, 1, ' ')
-,( 27, 4, 1, ' ')
-,( 28, 6, 1, ' ')
-,( 29, 3, 1, ' ')
-,( 30, 2, 1, ' ')
-,( 31, 11, 1, ' ')
-,( 32, 1, 1, ' ')
-,( 33, 6, 1, ' ')
-,( 34, 6, 1, ' ')
-,( 35, 6, 1, ' ')
-,( 36, 6, 1, ' ')
-,( 44, 10, 9, ' ')
-,( 43, 10, 1, ' ')
-,( 42, 11, 2, ' ')
-,( 41, 11, 2, ' ')
-,( 40, 11, 7, ' ')
-,( 39, 15, 2, ' ')
-,( 28, 15, 3, ' ')
-,( 17, 15, 1, ' ')
-,( 16, 7, 1, ' ')
-,( 1, 13, 2, ' ')
-,( 11, 14, 1, ' ')
-,( 10, 1, 2, ' ')
-,( 41, 2, 1, ' ')
+( 1, 1, 2, GETDATE())
+,( 2, 2, 2, GETDATE())
+,( 3, 3, 2, GETDATE())
+,( 4, 4, 2, GETDATE())
+,( 5, 5, 2, GETDATE())
+,( 6, 6, 1, GETDATE())
+,( 7, 7, 1, GETDATE())
+,( 8, 8, 1, GETDATE())
+,( 9, 9, 1, GETDATE())
+,( 10, 10, 1, GETDATE())
+,( 11, 11, 1, GETDATE())
+,( 11, 12, 1, GETDATE())
+,( 12, 13, 2, GETDATE())
+,( 13, 14, 2, GETDATE())
+,( 14, 15, 1, GETDATE())
+,( 15, 15, 2, GETDATE())
+,( 16, 14, 2, GETDATE())
+,( 17, 13, 2, GETDATE())
+,( 18, 12, 2, GETDATE())
+,( 19, 11, 2, GETDATE())
+,( 20, 10, 2, GETDATE())
+,( 21, 9, 2, GETDATE())
+,( 22, 8, 2, GETDATE())
+,( 23, 7, 2, GETDATE())
+,( 24, 6, 2, GETDATE())
+,( 25, 8, 2, GETDATE())
+,( 26, 5, 1, GETDATE())
+,( 27, 4, 1, GETDATE())
+,( 28, 6, 1, GETDATE())
+,( 29, 3, 1, GETDATE())
+,( 30, 2, 1, GETDATE())
+,( 31, 11, 1, GETDATE())
+,( 32, 1, 1, GETDATE())
+,( 33, 6, 1, GETDATE())
+,( 34, 6, 1, GETDATE())
+,( 35, 6, 1, GETDATE())
+,( 36, 6, 1, GETDATE())
+,( 44, 10, 9, GETDATE())
+,( 43, 10, 1, GETDATE())
+,( 42, 11, 2, GETDATE())
+,( 41, 11, 2, GETDATE())
+,( 40, 11, 7, GETDATE())
+,( 39, 15, 2, GETDATE())
+,( 28, 15, 3, GETDATE())
+,( 17, 15, 1, GETDATE())
+,( 16, 7, 1, GETDATE())
+,( 1, 13, 2, GETDATE())
+,( 11, 14, 1, GETDATE())
+,( 10, 1, 2, GETDATE())
+,( 41, 2, 1, GETDATE())
 
 
 select * from Fornecedor
@@ -376,8 +376,8 @@ group by
 	f.nome
 order by total desc
 
---
-select c.nome, sum(v.quantidade * m.preco) as total 
+--5
+select c.nome, sum(v.quantidade * m.valor) as total 
 from Vendas v
 join Cliente c
     on v.id_cliente = c.id
@@ -385,6 +385,27 @@ join Modelo m
     on v.id_modelo = m.id
 group by c.nome
 order by total
+
+--6
+select top 5 c.nome, sum(v.quantidade * m.valor) as total 
+from Vendas v
+join Cliente c
+    on v.id_cliente = c.id
+join Modelo m
+    on v.id_modelo = m.id
+group by c.nome
+order by total desc
+
+
+--7
+select Convert(date, dtvenda) as dtVenda, count(*) as quantidade
+from Vendas v
+join Cliente c
+    on v.id_cliente = c.id
+join Modelo m
+    on v.id_modelo = m.id
+group by v.dtvenda
+order by quantidade desc
 
 
 

@@ -281,15 +281,5 @@ where r.valor > 20
 
 
 
-
-
-
-
-
-
-
-
-
-
 delete Cliente
 where id = 9

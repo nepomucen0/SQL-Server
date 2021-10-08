@@ -327,11 +327,18 @@ set id_categoria = 3
 where cor = 'Bege'
 
 
---1.	Listar os modelos que possuem menos de 10 itens no estoque (Com código de refência e nome fornecedor)
-select id count () 
-from Modelo
-group by codigo_ref, id_fornecedor
 
+--1.	Listar os modelos que possuem menos de 10 itens no estoque (Com código de refência e nome fornecedor)
+select 
+	  f.nome
+	, m.codigo_ref
+	, e.qnt
+from Estoque as e
+join Modelo as m
+    on m.id = e.id_modelo
+join Fornecedor as f
+    on m.id_fornecedor = f.id
+where e.qnt < 10
 
 --2.	Listar a quantidade de modelos que cada fornecedor possui na nossa loja
 select 
@@ -347,15 +354,40 @@ order by f.id
 
 --3.	Listar os números de sapato que mais tiverem vendas
 select 
-	 v.id
-	--,f.nome as [Nome do fornecedor]
-	,max (v.id_categoria) as total
+	 m.tamanho
+	,sum(v.quantidade) as total
 from Vendas as v
-inner join Categoria as c
-	on c.id = v.id_categoria
+join Modelo as m
+	on v.id_modelo = m.id
 group by 
-	v.id
-order by v.id
+	m.tamanho
+order by total desc
+
+-- 4 Listar os fornecedores que mais venderam
+select
+	f.nome
+	,sum(v.quantidade) as total
+from Vendas as v
+join Modelo as m
+	on v.id_modelo = m.id
+join Fornecedor as f
+	on m.id_fornecedor = f.id
+group by 
+	f.nome
+order by total desc
+
+--
+select c.nome, sum(v.quantidade * m.preco) as total 
+from Vendas v
+join Cliente c
+    on v.id_cliente = c.id
+join Modelo m
+    on v.id_modelo = m.id
+group by c.nome
+order by total
+
+
+
 
 select * from Fornecedor
 select * from vendas
